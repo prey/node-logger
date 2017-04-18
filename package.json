@@ -10,6 +10,9 @@
     "name": "Tomas Pollak",
     "email": "tomas@forkhq.com"
   },
+  "dependencies": {
+    "petit-rotate": "^0.0.2"
+  },
   "license": "MIT",
   "readme": "ERROR: No README data found!"
 }
