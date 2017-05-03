@@ -136,7 +136,7 @@ Logger.prototype.scope = function(str) {
 }
 
 Logger.prototype.prefix = function(str) {
-  this.write('.prefix() will be deprecated on next version. Use .scope() instead');
+  // this.write('.prefix() will be deprecated on next version. Use .scope() instead');
   return this.scope(str);
 }
 

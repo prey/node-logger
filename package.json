@@ -11,7 +11,7 @@
     "email": "tomas@forkhq.com"
   },
   "dependencies": {
-    "petit-rotate": "^0.0.3"
+    "petit-rotate": "^0.0.4"
   },
   "license": "MIT",
   "readme": "ERROR: No README data found!"
