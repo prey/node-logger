@@ -1,4 +1,5 @@
-var fs     = require('fs');
+var fs     = require('fs'),
+    rotate = require('petit-rotate');
 
 var current,
     levels = ['debug', 'info', 'notice', 'warn', 'error', 'critical'];
@@ -46,9 +47,17 @@ function get_levels(prefix, instance) {
 
 var Logger = function(opts) {
   var self = this;
-  this.stream    = opts.stream ? opts.stream : opts.file ? fs.createWriteStream(opts.file) : process.stdout;
+  this.stream    = opts.stream ? opts.stream : opts.file ? fs.createWriteStream(opts.file, {flags: 'a'}) : process.stdout;
   this.paintable = this.stream.isTTY;
   this.set_level(opts.level || 'info');
+  this.rotate_opts = {
+    rotate   : opts.rotate,
+    path     : opts.file,
+    dest     : opts.dest,
+    size     : opts.size,
+    limit    : opts.limit,
+    compress : opts.compress
+  }
 
   if (opts.show_date === false) {
     this.get_date = function() { return '' }
@@ -104,8 +113,17 @@ Logger.prototype.log = function(level, str, prefix) {
 }
 
 Logger.prototype.write = function(str) {
-  if (this.stream.writable)
-    this.stream.write(str + '\n');
+  var self = this;
+  var next = function() {
+    if (self.stream.writable) self.stream.write(str + '\n');
+  }
+  rotate(str, self.rotate_opts, function(err, rotating) {
+    if (err) {
+      self.rotate_opts.rotate = false;
+      next();
+    }
+    if (!rotating) next();
+  });
 }
 
 Logger.prototype.paint = function(str, color) {
@@ -118,7 +136,7 @@ Logger.prototype.scope = function(str) {
 }
 
 Logger.prototype.prefix = function(str) {
-  this.write('.prefix() will be deprecated on next version. Use .scope() instead');
+  // this.write('.prefix() will be deprecated on next version. Use .scope() instead');
   return this.scope(str);
 }
 
