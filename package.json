@@ -1,6 +1,6 @@
 {
   "name": "petit",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Tinyiest possible logger.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "email": "tomas@forkhq.com"
   },
   "dependencies": {
-    "petit-rotate": "^0.0.4"
+    "petit-rotate": "https://github.com/prey/petit-rotate.git"
   },
   "license": "MIT",
   "readme": "ERROR: No README data found!"
